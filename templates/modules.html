@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modules - Marine Environmental Monitoring System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #ffffff;
+            /* Uncomment to use a global background image */
+            /* background: url('C:/main project/bluebg.jpg') no-repeat center center fixed; */
+        }
+
+        header {
+            margin: 20px 0;
+        }
+
+        main {
+            display: flex;
+            flex-direction: row; /* Arrange frames horizontally */
+            justify-content: center; /* Center frames horizontally */
+            gap: 20px; /* Space between frames */
+            width: 100%; /* Ensure main container spans full width */
+            padding: 20px;
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+
+        .frame {
+            width: 50%; /* Set width for each frame */
+            max-width: 300px;
+            height: 250px; /* Fixed height */
+            padding: 20px;
+            color: white;
+            text-align: center;
+            font-size: 1.8em;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .frame:hover {
+            transform: scale(1.05); /* Zoom effect on hover */
+            opacity: 0.9;
+        }
+
+        /* Background images for each frame */
+        .frame-oil {
+            background-image: url('{{ url_for("static", filename="images/Screenshot 2024-11-05 193231.jpg") }}');
+            background-color: #028bbd; /* Fallback color */
+            background-size: cover;
+        }
+
+        .frame-plastic {
+            background-image: url('{{ url_for("static", filename="images/Screenshot 2024-11-05 193703.jpg") }}');
+            background-color: #ff8c00; /* Fallback color */
+            background-size: cover;
+        }
+
+        .frame-analysis {
+            background-image: url('{{ url_for("static", filename="images/Screenshot 2024-11-05 194134.jpg") }}');
+            background-color: #4caf50; /* Fallback color */
+            color: black; /* Change text color to black */
+            background-size: cover;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Modules</h1>
+    </header>
+    <main>
+        <!-- Frame for Oil Spill Detection -->
+        <div class="frame frame-oil" onclick="location.href='/index'">
+            Oil Spill Detection
+        </div>
+        
+        <!-- Frame for Plastic Detection -->
+        <div class="frame frame-plastic" onclick="location.href='/indexs'">
+            Plastic Detection
+        </div>
+        
+        <!-- Frame for Analysis and Cleanup -->
+        <div class="frame frame-analysis" onclick="location.href='analysis_cleanup.html'">
+            Analysis and Cleanup
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Marine Environmental Monitoring System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('{{ url_for("static",filename="images/pexels-belle-co-99483-847393.jpg") }}');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center; 
+            background-size: cover;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        main {
+            flex: 1;
+            padding: 40px 20px;
+        }
+
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+            padding: 40px 20px;
+        }
+
+        .content h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .content p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .content ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background: rgba(0, 140, 186, 0.8);
+            color: white;
+            width: 100%;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>About Marine Environmental Monitoring</h1>
+    </header>
+    <main>
+        <div class="content">
+            <h2>The Importance of Protecting Marine Environments</h2>
+            <p>Marine ecosystems are vital to the health of our planet. They provide food, regulate climate, and support biodiversity. However, human activities such as pollution, overfishing, and habitat destruction are threatening these precious resources. The preservation of our oceans is essential for maintaining ecological balance, which benefits both marine and human life.</p>
+            
+            <h3>Our Project Goals</h3>
+            <p>This project is designed to tackle some of the most pressing issues facing marine ecosystems today. Using advanced monitoring and data collection technologies, our system will detect threats such as oil spills, plastic pollution, and other ecological disturbances. By identifying these issues in real-time, we aim to initiate quick responses that minimize damage to marine habitats.</p>
+            
+            <h3>Why Protecting Marine Life Matters</h3>
+            <p>Healthy oceans play a crucial role in the global ecosystem. They produce over half of the world’s oxygen, absorb carbon dioxide, and are home to millions of species. Protecting marine life contributes to:</p>
+            <ul>
+                <li>Maintaining biodiversity and preserving species.</li>
+                <li>Supporting sustainable fishing practices.</li>
+                <li>Preventing harmful algal blooms and dead zones.</li>
+                <li>Preserving the natural beauty of coastal regions.</li>
+            </ul>
+            
+            <h3>Our Commitment to the Oceans</h3>
+            <p>Through our project, we aim to raise awareness and promote sustainable practices that ensure marine ecosystems remain vibrant and resilient for future generations. Our initiative also includes educating communities about the significance of marine conservation and inspiring action towards a sustainable future.</p>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Marine Environmental Monitoring System. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>

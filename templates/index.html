@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marine Environmental Monitoring System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('{{ url_for("static", filename="images/pexels-kellie-churchman-371878-1001682.jpg") }}');  
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center; 
+            background-size: cover; /* Make sure it covers the whole page */
+            color: #ffffff; /* White text for contrast */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .hero {
+            background: url('pexels-kellie-churchman-371878-1001682.jpg'); /* Hero section background image */
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover; /* Cover the hero section */
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .hero h2 {
+            font-size: 2.5em;
+        }
+
+        .hero p {
+            font-size: 1.2em;
+        }
+
+        .hero button {
+            background: #0097A7; /* Lighter teal */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background: rgba(0, 140, 186, 0.8); /* Same as header with transparency */
+            color: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Marine Environmental Monitoring</h1>
+        <nav>
+            <ul>
+                <li><a href="/home">Home</a></li>
+                <li><a href="/modules">Modules</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="hero">
+            <h2>Protecting Our Oceans</h2>
+            <p>Monitoring marine environments for a sustainable future.</p>
+            <button onclick="window.location.href='/about'">Learn More</button> <!-- Updated link -->
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Marine Environmental Monitoring System. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>

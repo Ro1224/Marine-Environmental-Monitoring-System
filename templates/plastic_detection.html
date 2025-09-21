@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plastic Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 120vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .upload-section, .result-section, .cleanup-section {
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .button {
+            background-color: #0097A7;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #007d8c;
+        }
+
+        .button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        img {
+            margin-top: 20px;
+            max-width: 100%;
+            display: none;
+            border: 2px solid #0097A7;
+            border-radius: 10px;
+        }
+
+        #prediction-result {
+            font-size: 1.2em;
+            margin-top: 15px;
+            color: #333;
+            display: none;
+        }
+
+        #loading-spinner {
+            display: none;
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #0097A7;
+        }
+
+        .cleanup-details {
+            text-align: left;
+            display: none;
+        }
+
+        h2 {
+            color: #007d8c;
+        }
+
+        ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .additional-info {
+            font-style: italic;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Plastic Detection</h1>
+
+    <div class="upload-section">
+        <form id="uploadForm" method="post" enctype="multipart/form-data" action="/indexs">
+            <input type="file" id="imageUpload" name="file" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+            <button type="button" class="button" onclick="document.getElementById('imageUpload').click()">Upload Image</button>
+            <img id="uploaded-image" src="" alt="Uploaded Image">
+        </form>
+    </div>
+
+    <div class="result-section">
+        <button type="button" class="button" onclick="submitForm()" id="submitButton" disabled>Generate Results</button>
+        <p id="prediction-result"></p>
+        <img id="result-image" src="" alt="Result Image">
+        <div id="loading-spinner">Processing...</div>
+    </div>
+
+    <div class="cleanup-section" id="cleanup-section" style="display: none;">
+        <button type="button" class="button" onclick="viewCleanupStrategies()" id="cleanup-button" style="display: none;">View Cleanup Strategies</button>
+        <div class="cleanup-details" id="cleanup-details">
+            <h2>1. Drone Concept</h2>
+            <p>Automated drones are deployed to remove ocean plastics. They are effective for targeting small particles.</p>
+            <ul>
+                <li><b>Advantages:</b> Inexpensive units, unmanned, flexible deployment.</li>
+                <li><b>Disadvantages:</b> Long cleanup time, potential for by-catch, high operating cost, impractical for large debris.</li>
+            </ul>
+
+            <h2>2. Vessel-Based Concept</h2>
+            <p>This ship-based solution leverages existing technologies for plastic collection in marine environments.</p>
+            <ul>
+                <li><b>Advantages:</b> Low capital costs.</li>
+                <li><b>Disadvantages:</b> Long cleanup times, emissions, high costs, low efficiency, and challenges with small particles.</li>
+            </ul>
+
+            <h2>3. Ocean Cleanup Array</h2>
+            <p>This concept uses floating barriers and platforms moored to the seabed to catch buoyant plastic particles, allowing marine organisms to pass underneath.</p>
+            <p class="additional-info">Invented by Boyan Slat in 2013.</p>
+        </div>
+    </div>
+
+    <script>
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const uploadedImage = document.getElementById("uploaded-image");
+                    uploadedImage.src = e.target.result;
+                    uploadedImage.style.display = "block";
+
+                    const submitButton = document.getElementById("submitButton");
+                    submitButton.disabled = false;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function submitForm() {
+            const form = document.getElementById("uploadForm");
+            const formData = new FormData(form);
+
+            document.getElementById("loading-spinner").style.display = "block";
+
+            fetch(form.action, {
+                method: "POST",
+                body: formData,
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("loading-spinner").style.display = "none";
+
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        const predictionResult = document.getElementById("prediction-result");
+                        predictionResult.textContent = `Prediction: ${data.prediction}`;
+                        if (data.confidence) {
+                            predictionResult.textContent += ` (Confidence: ${data.confidence}%)`;
+                        }
+                        predictionResult.style.display = "block";
+
+                        const resultImage = document.getElementById("result-image");
+                        resultImage.src = `data:image/png;base64,${data.result_image}`;
+                        resultImage.style.display = "block";
+
+                        const cleanupSection = document.getElementById("cleanup-section");
+                        const cleanupButton = document.getElementById("cleanup-button");
+
+                        if (data.prediction.includes("Plastic")) {
+                            cleanupSection.style.display = "block";
+                            cleanupButton.style.display = "block"; // Show cleanup strategies button if plastic is detected
+                        } else {
+                            cleanupSection.style.display = "none";
+                            cleanupButton.style.display = "none"; // Hide cleanup strategies button if plastic is not detected
+                        }
+                    }
+                })
+                .catch(error => {
+                    document.getElementById("loading-spinner").style.display = "none";
+                    console.error("Error:", error);
+                    alert("An error occurred while processing your request.");
+                });
+        }
+
+        function viewCleanupStrategies() {
+            const cleanupDetails = document.getElementById("cleanup-details");
+            cleanupDetails.style.display = cleanupDetails.style.display === "block" ? "none" : "block";
+        }
+    </script>
+</body>
+</html>

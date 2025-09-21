@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oil Spill Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .upload-section, .result-section {
+            margin: 20px;
+            text-align: center;
+        }
+
+        .button {
+            background-color: #0097A7;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        #success-message {
+            color: green;
+            margin-top: 15px;
+            display: none;
+        }
+
+        #uploaded-image {
+            margin-top: 20px;
+            max-width: 300px;
+            display: none;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #prediction-details {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #333;
+            display: none;
+        }
+
+        .details-section p {
+            font-size: 1.5em;
+            margin: 10px 0;
+        }
+
+        .high-risk {
+            color: red;
+        }
+
+        .medium-risk {
+            color: orange;
+        }
+
+        .low-risk {
+            color: green;
+        }
+
+        .preprocessed-images {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            gap: 20px;
+        }
+
+        .preprocessed-images img {
+            max-width: 200px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .preprocessed-images .method-name {
+            text-align: center;
+            font-size: 1em;
+            color: #555;
+        }
+
+        .cleanup-button {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .cleanup-methods {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .method {
+            margin-bottom: 20px;
+        }
+
+        .method h2 {
+            color: #333;
+        }
+
+        .method p {
+            font-size: 1em;
+            color: #555;
+        }
+        .method ul {
+        list-style-type: disc;
+        padding-left: 20px;
+        color: #555;
+     }
+
+    .cleanup-methods h2 {
+        font-size: 2em;
+        color: #333;
+        margin-bottom: 20px;
+        text-align: center;
+     }
+
+    .method .method-name {
+        font-size: 1.1em;
+        color: #333;
+        margin-top: 15px;
+     }
+
+    .method ul li {
+        margin-bottom: 8px;
+     }
+
+    .cleanup-methods .method {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+     }
+
+    .cleanup-methods .method p {
+        font-size: 1em;
+        color: #444;
+     }
+    </style>
+</head>
+<body>
+    <h1>Oil Spill Detection</h1>
+
+    <!-- Upload Section -->
+    <div class="upload-section">
+        <input type="file" id="imageUpload" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+        <button class="button" onclick="document.getElementById('imageUpload').click()">Upload Image</button>
+        <p id="success-message">Successfully uploaded</p>
+        <img id="uploaded-image" src="" alt="Uploaded Image">
+    </div>
+
+    <!-- Results Section -->
+    <div class="result-section">
+        <button class="button" onclick="generateResults()">Generate Results</button>
+        <div id="prediction-details" class="details-section">
+            <p id="spill-percentage"></p> <!-- Spill Percentage -->
+            <p id="zone-result"></p>      <!-- Zone Result -->
+            <p id="prediction"></p>       <!-- Prediction -->
+        </div>
+    </div>
+
+    <!-- Preprocessed Images -->
+    <div class="preprocessed-images" id="preprocessed-images" style="display: none;">
+        <div>
+            <img id="gray-image" src="" alt="Grayscale Image">
+            <p class="method-name">Grayscale Image</p>
+        </div>
+        <div>
+            <img id="edges-image" src="" alt="Edge Detection Image">
+            <p class="method-name">Edge Detection Image</p>
+        </div>
+        <div>
+            <img id="gaussian-blur-image" src="" alt="Gaussian Blur Image">
+            <p class="method-name">Gaussian Blur Image</p>
+        </div>
+    </div>
+
+    <!-- Cleanup Action Section -->
+    <div class="cleanup-button">
+        <button class="button" id="cleanup-strategies" style="display: none;" onclick="navigateToCleanup()">View Cleanup Strategies</button>
+    </div>
+
+    <!-- Cleanup Strategies -->
+    <div id="cleanup-methods" class="cleanup-methods"></div>
+
+    <!-- JavaScript Code -->
+    <script>
+        let uploadedFile = null;
+
+        // Handle Image Upload
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                uploadedFile = file;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const uploadedImage = document.getElementById("uploaded-image");
+                    uploadedImage.src = e.target.result;
+                    uploadedImage.style.display = "block";
+                    document.getElementById("success-message").style.display = "block";
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Generate Results
+        function generateResults() {
+            if (!uploadedFile) {
+                alert("Please upload an image first.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', uploadedFile);
+
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert("Error: " + data.error);
+                } else {
+                    // Clear previous results if any
+                    document.getElementById("spill-percentage").innerHTML = '';
+                    document.getElementById("zone-result").innerHTML = '';
+                    document.getElementById("prediction").innerHTML = '';
+                    document.getElementById("prediction-details").style.display = "none";
+
+                    const spillPercentage = parseFloat(data.spill_percentage).toFixed(2);
+                    const zone = data.zone;
+                    const prediction = data.result;
+
+                    // Display Prediction Details
+                    document.getElementById("spill-percentage").innerHTML = `<strong>Spill Percentage:</strong> ${spillPercentage}%`;
+                    document.getElementById("zone-result").innerHTML = `<strong>Zone:</strong> ${zone}`;
+                    document.getElementById("prediction").innerHTML = `<strong>Prediction:</strong> ${prediction}`;
+                    document.getElementById("prediction-details").style.display = "block";
+
+                    // Zone-specific Alerts
+                    const zoneResult = document.getElementById("zone-result");
+                    zoneResult.classList.remove("high-risk", "medium-risk", "low-risk"); // Remove any existing classes
+                    if (zone === "High-Risk Zone") {
+                        alert("⚠️ High Risk Zone detected! Immediate action is required.");
+                        zoneResult.classList.add("high-risk");
+                    } else if (zone === "Medium-Risk Zone") {
+                        alert("⚠️ Medium Risk Zone detected. Caution is advised.");
+                        zoneResult.classList.add("medium-risk");
+                    } else {
+                        zoneResult.classList.add("low-risk");
+                    }
+
+                    // Update Preprocessed Images
+                    document.getElementById("gray-image").src = `data:image/png;base64,${data.gray_image}`;
+                    document.getElementById("edges-image").src = `data:image/png;base64,${data.edges_image}`;
+                    document.getElementById("gaussian-blur-image").src = `data:image/png;base64,${data.blurred_image}`;
+                    document.getElementById("preprocessed-images").style.display = "flex";
+
+                    // Show cleanup strategies button
+                    document.getElementById("cleanup-strategies").style.display = "block";
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An unexpected error occurred. Please try again later.');
+            });
+        }
+
+        // Navigate to Cleanup Strategies
+        function navigateToCleanup() {
+            const zone = document.getElementById("zone-result").innerText.split(":")[1].trim();
+            const cleanupMethodsDiv = document.getElementById("cleanup-methods");
+            cleanupMethodsDiv.innerHTML = ''; // Clear previous methods
+
+            // Based on zone, show corresponding methods
+            if (zone === "High-Risk Zone") {
+                cleanupMethodsDiv.innerHTML = `
+                    <div class="method">
+                        <h2>1. Using Oil Booms</h2>
+                        <p>The use of oil booms is a straightforward and popular method of controlling oil spills. Equipment called containment booms acts like a fence to prevent the oil from further spreading or floating away. Booms float on the water surface and have three parts:</p>
+                        <ul>
+                            <li>A ‘freeboard’ is the part that rises above the water surface, containing the oil and preventing it from splashing over the top.</li>
+                            <li>A ‘skirt’ is the part that extends underwater, catching the oil.</li>
+                            <li>A flotation system is used to keep the boom afloat.</li>
+                        </ul>
+                    </div>
+                    <div class="method">
+                        <h2>2. Chemical Dispersants</h2>
+                        <p>Dispersants break the oil into smaller particles that can be easily dispersed in the water. This method is effective for emulsifying oil, making it less harmful to aquatic life. However, it is important to use dispersants carefully to avoid damaging the marine ecosystem.</p>
+                    </div>
+                    <div class="method">
+                        <h2>3. Skimming and Vacuuming</h2>
+                        <p>Skimming involves using specialized vessels to remove oil from the water surface. Skimmers are generally used in combination with booms to separate oil from water and collect it for proper disposal.</p>
+                    </div>
+                `;
+            } else if (zone === "Medium-Risk Zone") {
+                cleanupMethodsDiv.innerHTML = `
+                    <div class="method">
+                        <h2>1. Absorbents</h2>
+                        <p>Absorbents are materials that absorb or adsorb liquids. For oil spills, natural or synthetic materials are deployed to soak up the oil, which is then collected for disposal.</p>
+                    </div>
+                    <div class="method">
+                        <h2>2. Bioremediation</h2>
+                        <p>This method encourages the growth of microorganisms to degrade and neutralize the oil spill. It is a natural and environmentally friendly solution that can be used for less severe spills.</p>
+                    </div>
+                    <div class="method">
+                        <h2>3. Manual Collection</h2>
+                        <p>For small-scale spills, manual collection techniques using buckets or sponges can be used to remove the oil. This method is time-consuming and may only be applicable to localized spill areas.</p>
+                    </div>
+                `;
+            } else if (zone === "Low-Risk Zone") {
+                cleanupMethodsDiv.innerHTML = `
+                    <div class="method">
+                        <h2>1. Natural Recovery</h2>
+                        <p>In low-risk zones, the ecosystem may naturally recover from a small oil spill without intervention. The process involves natural degradation, evaporation, and dispersion over time.</p>
+                    </div>
+                    <div class="method">
+                        <h2>2. Containment and Monitoring</h2>
+                        <p>In some cases, low-risk zones may require simple containment using barriers or booms to prevent the oil from spreading. Monitoring and surveillance are essential to ensure minimal environmental impact.</p>
+                    </div>
+                `;
+            }
+            cleanupMethodsDiv.style.display = "block";
+        }
+    </script>
+</body>
+</html>

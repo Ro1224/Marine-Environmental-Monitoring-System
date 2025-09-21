@@ -1,0 +1,44 @@
+{
+    "cleanup_methods": [
+      {
+        "description": "The use of oil booms is a straightforward and popular method of controlling oil spills. Equipment called containment booms acts like a fence to prevent the oil from further spreading or floating away. Booms float on the water surface and have three parts \u2013",
+        "method": "1. Using Oil Booms"
+      },
+      {
+        "description": "Once the oil has been confined by using oil booms, skimmers or oil scoops can be deployed onto boats to remove the contaminants from the water surface. Skimmers are machines specially designed to suck up the oil from the water surface like a vacuum cleaner. They are used to physically separate the oil from the water to be collected and processed for re-use.",
+        "method": "2. Using Skimmers"
+      },
+      {
+        "description": "Sorbents are materials that soak up liquids by either absorption (pulling in through pores) or adsorption (forming a layer on the surface). Both these properties make the process of clean-up much easier. Materials commonly used as oil sorbents are hay, peat moss, straw or vermiculite.",
+        "method": "3. Using Sorbents"
+      },
+      {
+        "description": "In this method, the oil floating on the surface is ignited to burn it off. This in-situ burning of oil can effectively remove up to 98% of an oil spill, which is more than most other methods.",
+        "method": "4. Burning In-situ"
+      },
+      {
+        "description": "When the spilt oil cannot be contained by using booms, the only option left is to accelerate the disintegration of oil. Dispersal agents, such as Corexit 9500, are chemicals that are sprayed upon the spill with the help of aircraft and boats, which aid the natural breakdown of oil components.",
+        "method": "5. Using Dispersants"
+      },
+      {
+        "description": "This procedure is mainly used in situations where the oil is inaccessible to mechanical removal methods such as using booms and skimmers. It is used to dislodge the trapped and weathered oil from locations that are generally inaccessible to machinery.",
+        "method": "6.Hot Water and High-Pressure Washing"
+      },
+      {
+        "description": "As the name suggests, the method requires hand-held tools and manual labour to clean up the contaminants. It involves using manual means like hands, rakes, shovels etc., to clean the surface oil and oily debris and place them in special containers to be removed from the shoreline.",
+        "method": "7. Using Manual Labour"
+      },
+      {
+        "description": "Bioremediation refers to the use of specific microorganisms to remove any toxic or harmful substances. For example, various bacteria, fungi, archaea, and algae degrade petroleum products by metabolizing and breaking them into simpler and non-toxic molecules (mostly fatty acids and carbon dioxide). Sometimes, reagents and fertilizers may be added to the area.",
+        "method": "8. Bioremediation"
+      },
+      {
+        "description": "Right after an oil spill, the immediate concern is to prevent the oil from spreading and contaminating the adjacent areas. While mechanical methods like using oil booms effectively contain the oil, they have certain limitations to their use.",
+        "method": "9. Chemical Stabilisation of oil by Elastomizers"
+      },
+      {
+        "description": "The simplest method of dealing with the oil spill cleanup operation is to use the vagaries of nature like the sun, the wind, the weather, tides, or naturally occurring microbes. It is used in certain cases when the shoreline is too remote or inaccessible, or the environmental impact of cleaning up a spill could potentially far outweigh the benefits.",
+        "method": "10. Natural Recovery"
+      }
+    ]
+  }
