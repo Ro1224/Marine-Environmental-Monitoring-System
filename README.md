@@ -123,8 +123,3 @@ Contributions to improve the system are welcome. Please follow these steps:
 4. Push to the branch
 5. Create a Pull Request
 
-## License
-[Specify your license here]
-
-## Contact
-[Add your contact information here]
