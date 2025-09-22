@@ -1,4 +1,4 @@
-# Marine Environmental Analysis System
+# Marine Environmental Monitoring System
 
 ## Overview
 This project is a comprehensive web-based system for detecting and analyzing marine environmental hazards, specifically focusing on oil spills and plastic waste detection in marine environments. The system utilizes deep learning models and computer vision techniques to provide real-time analysis and classification of environmental threats.
